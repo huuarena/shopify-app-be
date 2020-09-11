@@ -7,7 +7,7 @@ module.exports.find = async () => {
             `SELECT widgets FROM store_settings`,
         );
 
-        return ResponseHandler.success(res.rows[0].widgets || []);
+        return ResponseHandler.success(res.rows[0].widgets || {});
     } catch (error) {
         // check if column not exists
         if (error.message === `column "widgets" does not exist`) {
@@ -17,7 +17,7 @@ module.exports.find = async () => {
                 `ALTER TABLE store_settings ADD COLUMN widgets JSON`,
             );
 
-            return ResponseHandler.success([]);
+            return ResponseHandler.success({});
         }
 
         return ResponseHandler.error(error);

@@ -19,7 +19,6 @@ const query = async (sql_query) => {
     const client = await pool.connect();
     try {
         const res = await client.query(sql_query);
-        // console.log('query res :>> ', res);
 
         return res;
     } catch (error) {

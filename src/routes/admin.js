@@ -4,7 +4,8 @@ var bodyParser = require('koa-bodyparser');
 
 const WidgetsMiddlewares = require('./../middlewares/widgets');
 const YoutubeChannelMiddlewares = require('../middlewares/youtube_channel');
-const YoutubeApiKeyMiddlewares = require('../middlewares/youtube_api');
+const YoutubeApiMiddlewares = require('../middlewares/youtube_api');
+const VideosMiddlewares = require('../middlewares/videos');
 
 route.get('/widgets', async (ctx) => {
     const { store_name } = ctx.query;
@@ -13,7 +14,8 @@ route.get('/widgets', async (ctx) => {
 });
 
 route.post('/widgets', bodyParser(), async (ctx) => {
-    const { store_name, data_stringfy } = ctx.request.body;
+    const { store_name } = ctx.query;
+    const { data_stringfy } = ctx.request.body;
     const res = await WidgetsMiddlewares.update(store_name, data_stringfy);
     ctx.body = res;
 });
@@ -25,7 +27,8 @@ route.get('/youtube-channel', async (ctx) => {
 });
 
 route.post('/youtube-channel', bodyParser(), async (ctx) => {
-    const { store_name, data_stringfy } = ctx.request.body;
+    const { store_name } = ctx.query;
+    const { data_stringfy } = ctx.request.body;
     const res = await YoutubeChannelMiddlewares.update(
         store_name,
         data_stringfy,
@@ -35,16 +38,27 @@ route.post('/youtube-channel', bodyParser(), async (ctx) => {
 
 route.get('/youtube-api', async (ctx) => {
     const { store_name } = ctx.query;
-    const res = await YoutubeApiKeyMiddlewares.find(store_name);
+    const res = await YoutubeApiMiddlewares.find(store_name);
     ctx.body = res;
 });
 
 route.post('/youtube-api', bodyParser(), async (ctx) => {
-    const { store_name, data_stringfy } = ctx.request.body;
-    const res = await YoutubeApiKeyMiddlewares.update(
-        store_name,
-        data_stringfy,
-    );
+    const { store_name } = ctx.query;
+    const { data_stringfy } = ctx.request.body;
+    const res = await YoutubeApiMiddlewares.update(store_name, data_stringfy);
+    ctx.body = res;
+});
+
+route.get('/videos', async (ctx) => {
+    const { store_name } = ctx.query;
+    const res = await VideosMiddlewares.find(store_name);
+    ctx.body = res;
+});
+
+route.post('/videos', bodyParser(), async (ctx) => {
+    const { store_name } = ctx.query;
+    const { data_stringfy } = ctx.request.body;
+    const res = await VideosMiddlewares.update(store_name, data_stringfy);
     ctx.body = res;
 });
 

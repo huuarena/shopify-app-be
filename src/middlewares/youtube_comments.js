@@ -4,11 +4,11 @@ const { ResponseHandler } = require('../utils/responseHandler');
 module.exports.find = async (store_name) => {
     try {
         const res = await postgresql.query(
-            `select videos from yout_app where store_name = '${store_name}';`,
+            `select youtube_comments from yout_app where store_name = '${store_name}';`,
         );
 
         return ResponseHandler.success(
-            res.rows.length ? res.rows[0].videos : {},
+            res.rows.length ? res.rows[0].youtube_comments : [],
         );
     } catch (error) {
         return ResponseHandler.error(error);
@@ -23,7 +23,7 @@ module.exports.update = async (store_name, data_stringfy) => {
         }
 
         await postgresql.query(
-            `update yout_app set videos = '${data_stringfy}' where store_name = '${store_name}'`,
+            `update yout_app set youtube_comments = '${data_stringfy}' where store_name = '${store_name}'`,
         );
 
         return ResponseHandler.success();

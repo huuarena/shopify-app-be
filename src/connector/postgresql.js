@@ -20,7 +20,7 @@ const query = async (sql_query) => {
     try {
         const res = await client.query(sql_query);
 
-        // console.log('res.rows :>> ', res.rows);
+        console.log('res.rows :>> ', res.rows);
 
         return res;
     } catch (error) {

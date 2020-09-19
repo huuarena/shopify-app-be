@@ -20,7 +20,7 @@ module.exports.find = async (store_name) => {
                 `create table if not exists yout_app ( 
                     store_name varchar unique not null primary key, 
                     youtube_api json not null default '{}',
-                    widgets json not null default '{}'
+                    widgets json not null default '[]'
                 );`,
             );
 
@@ -42,10 +42,11 @@ module.exports.find = async (store_name) => {
 };
 
 module.exports.update = async (store_name, field, data_stringify) => {
+    console.log('store_name, field, data_stringify :>> ', store_name, field, data_stringify);
     try {
         // check data
         if (!store_name || !field || !data_stringify) {
-            return ResponseHandler.error({ message: 'Invalid data' });
+            return ResponseHandler.error({ message: 'Invalid input data' });
         }
 
         await postgresql.query(

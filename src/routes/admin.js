@@ -6,7 +6,7 @@ const YoutAppMiddlewares = require('./../middlewares/yout_app');
 const WidgetsMiddlewares = require('./../middlewares/widgets');
 
 const SESSION_DEMO = {
-    shop: 'abc-store.shopify.com.vn',
+    shop: 'hahalolo.myshopify.com',
     accessToken: '',
 };
 

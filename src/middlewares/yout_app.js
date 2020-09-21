@@ -7,17 +7,22 @@ const { ResponseHandler } = require('../utils/responseHandler');
  */
 module.exports.find = async (store_name) => {
     try {
-        const res = await postgresql.query(
+        let res = await postgresql.query(
             `select * from yout_app where store_name = '${store_name}';`,
         );
 
         if (res.rows.length) {
             return ResponseHandler.success(res.rows[0]);
         } else {
-            return ResponseHandler.error({ message: 'No data found' });
-        }
+            // init data
+            await postgresql.query(`insert into yout_app (store_name) values ('${store_name}');`);
 
-        return ResponseHandler.success(res.rows.length ? res.rows[0] : {});
+            res = await postgresql.query(
+                `select * from yout_app where store_name = '${store_name}';`,
+            );
+
+            return ResponseHandler.success(res.rows[0]);
+        }
     } catch (error) {
         // check if not exists table
         if (error.message === 'relation "yout_app" does not exist') {

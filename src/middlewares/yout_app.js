@@ -1,6 +1,10 @@
 const { postgresql } = require('../connector/postgresql');
 const { ResponseHandler } = require('../utils/responseHandler');
 
+/**
+ *
+ * @param {String} store_name
+ */
 module.exports.find = async (store_name) => {
     try {
         const res = await postgresql.query(
@@ -15,7 +19,9 @@ module.exports.find = async (store_name) => {
 
         return ResponseHandler.success(res.rows.length ? res.rows[0] : {});
     } catch (error) {
+        // check if not exists table
         if (error.message === 'relation "yout_app" does not exist') {
+            // create table if not exist
             await postgresql.query(
                 `create table if not exists yout_app ( 
                     store_name varchar unique not null primary key, 
@@ -24,6 +30,7 @@ module.exports.find = async (store_name) => {
                 );`,
             );
 
+            // init data
             await postgresql.query(`insert into yout_app (store_name) values ('${store_name}');`);
 
             const res = await postgresql.query(
@@ -41,8 +48,13 @@ module.exports.find = async (store_name) => {
     }
 };
 
+/**
+ *
+ * @param {String} store_name
+ * @param {Strgin} field
+ * @param {String} data_stringify
+ */
 module.exports.update = async (store_name, field, data_stringify) => {
-    console.log('store_name, field, data_stringify :>> ', store_name, field, data_stringify);
     try {
         // check data
         if (!store_name || !field || !data_stringify) {

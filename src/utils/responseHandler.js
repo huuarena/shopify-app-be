@@ -1,3 +1,7 @@
+/**
+ *
+ * @param {Object} payload
+ */
 const success = (payload) => {
     return {
         success: true,
@@ -5,6 +9,10 @@ const success = (payload) => {
     };
 };
 
+/**
+ *
+ * @param {Object} error
+ */
 const error = (error) => {
     return {
         success: false,
